@@ -1,0 +1,86 @@
+{% extends 'chess_app/base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
+{% endblock css %}
+
+{% block navbar-nav %}
+    {% if user.is_authenticated %}
+        <a class="nav-item nav-link" href="{% url 'game' %}">Create game</a>
+        <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+    {% endif %}
+{% endblock navbar-nav %}
+
+{% block content %}
+    <h1>Welcome to ELSYS Chess</h1>
+
+    <div id="demoBoard" style="width: 400px"></div>
+{% endblock content %}
+
+{% block active_users %}
+    {% if active_users.count > 1 %}
+        {% for active_user in active_users %}
+            {% if active_user != user %}
+                <a id="BUTTON{{ active_user.id }}" class="btn btn-outline-success" onclick="nameOfFunction('{% url 'game' %}'+'{{ user }}/', '{{ active_user.id }}', '{{ user }}');" data-toggle="modal" data-target="#senderModal{{ active_user }}">{{ active_user }}</a>
+
+                <!-- Modal -->
+                <div id="senderModal{{ active_user }}" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Invite sent!</h4>
+                                <button type="button" class="close" data-dismiss="modal"  onclick="javascript:window.location='{% url 'game' %}'">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Invite is successfully sent to {{ active_user }}!</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-danger" data-dismiss="modal" onclick="javascript:window.location='{% url 'game' %}'">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h6>There are not any active users!</h6>
+    {% endif %}
+
+{% endblock active_users %}
+
+{% block modal %}
+    <!-- Modal -->
+    <div id="recieverModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Invite recieved!</h4>
+                    <button type="button" class="close" data-dismiss="modal"  onclick="javascript:window.location='{% url 'game' %}'">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>ПОЛУ </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal" onclick="javascript:window.location='{% url 'game' %}'">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock modal %}
+
+{% block script %}
+    <script src="../../static/chess_app/js/chessboard-1.0.0.js"></script>
+    <script src="../../static/chess_app/js/chess.js"></script>
+    <script src="../../static/chess_app/js/demoGame.js"></script>
+    <script src="../../static/chess_app/js/notifications.js"></script>
+{% endblock script %}

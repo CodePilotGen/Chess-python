@@ -1,0 +1,112 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'chess_app/css/main.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    {% block css %} {% endblock %}
+
+    {% if title %}
+        <title>ELSYS Chess - {{ title }}</title>
+    {% else %}
+        <title>ELSYS Chess</title>
+    {% endif %}
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="{% url 'chess-home' %}">ELSYS Chess</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        {% comment %} <a class="nav-item nav-link" href="{% url 'chess-home' %}">Home</a> {% endcomment %}
+                    </div>
+
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        {% block navbar-nav %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% block content %}{% endblock %}
+                {% block history %}{% endblock %}
+                {% block modal %}{% endblock %}
+            </div>
+
+            {% block sidebar %}
+                <div class="col-md-4">
+                    {% if user.is_authenticated %}
+                        <div class="content-section">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h4>Welcome, {{ user.username }}</h4>
+                                    <p class="text-muted">Here are your boards</p>
+                                </div>
+                            </div>
+                            <p>
+                                <ul class="list-group">
+                                    {% comment %} <li class="list-group-item list-group-item-light">Board 1</li> {% endcomment %}
+                                    {% block boards %} {% endblock %}
+                                </ul>
+                            </p>
+                        </div>
+
+                        <div class="content-section">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h4>Active users</h4>
+                                </div>
+                            </div>
+                            <p>
+                                <ul class="list-group">
+                                    {% block active_users %} {% endblock %}
+                                </ul>
+                            </p>
+                        </div>
+                    {% else %}
+                        <div class="content-section">
+                            <h3>Hello GuestUser!</h3>
+                            <p class='text-muted'>Click <a href="{% url 'register' %}">here</a> to register.</p>
+                            <p class='text-muted'>You have an account? Log in <a href="{% url 'login' %}">here</a>.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endblock %}
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    {% block script %} {% endblock %}
+</body>
+</html>

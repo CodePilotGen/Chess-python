@@ -1,0 +1,48 @@
+{% extends 'chess_app/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
+{% endblock css %}
+
+{% block content %}
+    <div id="myBoard" style="width: 400px"></div>
+    {{ room_name|json_script:"room-name" }}
+{% endblock content %}
+
+{% block history %}
+    <br>
+    <div class="content-section">
+        <h2>History:</h2>
+        <p id="pgn"></p>
+    </div>
+{% endblock history %}
+
+{% block sidebar %}
+    <div class="col-md-4">
+        <div class="content-section">
+            <h2>Game info</h2>
+            <hr>
+            <h4>White: </h4><h5>{{ creator }}</h5>
+            <h4>Black: </h4><h5></h5> <!-- can't detect oponent's username -->
+            <hr>
+            <!-- can't send popup to different person -->
+            <a id="undo" class="btn btn-outline-success">Undo</a>
+            <a class="btn btn-outline-warning">Offer draw</a>
+            <a class="btn btn-outline-danger">Forfeit</a>
+        </div>
+        <div class="content-section">
+            <h2>Chat</h2>
+            <hr>
+            <textarea id="chat-log" rows="10"></textarea>
+            <input id="chat-message-input" type="text">
+            <input id="chat-message-submit" type="button" value="Send">
+        </div>
+    </div>
+{% endblock sidebar %}
+
+{% block script %}
+    <script src="{% static 'chess_app/js/chessboard-1.0.0.js' %}"></script>
+    <script src="{% static 'chess_app/js/chess.js' %}"></script>
+    <script src="{% static 'game/js/game.js' %}"></script>
+{% endblock script %}

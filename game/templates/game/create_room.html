@@ -1,0 +1,10 @@
+{% extends 'chess_app/base.html' %}
+
+{% block content %}
+    <h1>You have created a room!</h1>
+    <h2>Copy this link and share it with your friend to start the game:</h2>
+    <h3><a href="{{ url }}{{ user }}/{{ game_id }}/">Start now</a></h3>
+{% endblock content %}
+
+{% block sidebar %}
+{% endblock sidebar %}

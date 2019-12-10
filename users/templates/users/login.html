@@ -1,0 +1,39 @@
+{% extends 'chess_app/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block navbar-nav %}
+    {% if user.is_authenticated %}
+        <a class="nav-item nav-link" href="{% url 'game' %}">Create game</a>
+        <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+    {% endif %}
+{% endblock navbar-nav %}
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Log In</legend>
+                {{ form|crispy }}
+            </fieldset>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-info">Log In</button>
+            </div>
+        </form>
+
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Need An Account? <a href="{% url 'register' %}" class="ml-2">Sign Up Now</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,1 @@
+web: gunicorn elsys_chess_app.wsgi

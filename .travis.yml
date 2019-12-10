@@ -1,0 +1,20 @@
+language: python
+python:
+- '3.7'
+install:
+- pip install -r requirements.txt
+- pip install python-coveralls
+- python manage.py makemigrations
+- python manage.py migrate
+script:
+- coverage run manage.py test users
+deploy:
+  provider: heroku
+  api_key:
+    secure: vqBFNvbx6+8dDcj9DbcMrvR0sr8meJaevXDwBsOzcuxPdHA8CUBapDWJ2JrOfOiGttAhgk3zjHce0zOjESQp2IQT1xToe6OuuXAxPOa+kvm3ilGyahzvx7ohTr7m8yzbjWe4u5xRIjHoHKU148zDTVzOSKSb7jh9zL+kCi0QzMZ8nL4M5vfDivMRrFv7Ccp9ilWizVqNAKM/er5jyB4NY8816o6HuZgGkpgKk5+G4ebINF/d2eTvbE9tZao1x7Jj/8wfEphQNZbcAEisDWZUPif2T/LYpzJkLsgojeCuRzPjv8M/gm1uk3qTsMyJUrtl2yV1h/5eTC2DKbw4/Gap1mc/kDmlrFQMz1o24GgQ2V637TuCZW7pMON1HLTsGCMVN/NGPcQcSN/EWsMSXiasMc8gn7OwomHB/UQfwnxuR0UrhoOjvXeTw3UKQf2vaVzKDkDfU10axyEerYPhyxglYSYwjUNjchi3UR2M87ms7aGpxWYCtNeC8SZl7a3/avHcblDAqA56Xct7N5mTWqedOxzQWQfo6ZVXRUPi7jvmJ/HCalO7ish2StsXz51uDT8mA9g2xfJKX1VFvKJisdotXm2HcR8NTCo+t5YYwNimLpunUC8i+FdTcUcqEcFWOLvdAljUGJeFfFe38GZF5NJSoTpafu+yX9fj0qxBBi0ZSUg=
+  app: elsys-chess-bg
+  run:
+  - python manage.py makemigrations
+  - python manage.py migrate
+after_success:
+- coveralls
